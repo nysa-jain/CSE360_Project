@@ -10,83 +10,71 @@ import java.io.File;
 
 public class UserLoginWindow extends Application {
 
-    private AdminApp adminApp; // Instance of AdminApp to handle administrative tasks
-    private File userD; // File reference for user database
-    private File codeD; // File reference for code database
+    private AdminApp adminApp;
+    private File userD;
+    private File codeD;
 
     @Override
     public void start(Stage primaryStage) {
-        // Initialize AdminApp and database files
         adminApp = new AdminApp();
         userD = new File("UserDatabase.txt");
         codeD = new File("CodeDatabase.txt");
 
-        // Set the title of the primary stage
         primaryStage.setTitle("User Registration");
 
-        // Create a vertical layout for the UI components
         VBox layout = new VBox(10);
 
-        // Create text fields for user input
         TextField fullNameField = new TextField();
-        fullNameField.setPromptText("Full Name"); // Placeholder text
+        fullNameField.setPromptText("Full Name");
 
         TextField emailField = new TextField();
-        emailField.setPromptText("Email"); // Placeholder text
+        emailField.setPromptText("Email");
 
         PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Password"); // Placeholder text
+        passwordField.setPromptText("Password");
 
         PasswordField confirmPasswordField = new PasswordField();
-        confirmPasswordField.setPromptText("Confirm Password"); // Placeholder text
+        confirmPasswordField.setPromptText("Confirm Password");
 
         TextField invitationCodeField = new TextField();
-        invitationCodeField.setPromptText("Invitation Code"); // Placeholder text
+        invitationCodeField.setPromptText("Invitation Code");
 
-        // Create a button for proceeding to the next step
         Button nextButton = new Button("Next");
-        Label statusLabel = new Label(); // Label to display status messages
+        Label statusLabel = new Label();
 
-        // Set action for the next button
         nextButton.setOnAction(e -> {
-            // Get input values from the text fields
             String fullName = fullNameField.getText();
             String email = emailField.getText();
             String password = passwordField.getText();
             String confirmPassword = confirmPasswordField.getText();
             String code = invitationCodeField.getText();
 
-            // Check if passwords match
             if (!password.equals(confirmPassword)) {
-                statusLabel.setText("Passwords do not match."); // Update status label
-                return; // Exit method if passwords do not match
+                statusLabel.setText("Passwords do not match.");
+                return;
             }
 
             // Validate the invitation code and proceed to setup
             if (adminApp.validateInvitationCode(code, "Student", codeD) || 
                 adminApp.validateInvitationCode(code, "Instructor", codeD)) {
-                // If valid, create and start the SetupAccountWindow
                 SetupAccountWindow setupWindow = new SetupAccountWindow(
                         adminApp, userD, fullName, email, password, codeD);
-                setupWindow.start(new Stage()); // Start the new window
-                primaryStage.close(); // Close the current stage
+                setupWindow.start(new Stage());
+                primaryStage.close();
             } else {
-                statusLabel.setText("Invalid invitation code."); // Update status label for invalid code
+                statusLabel.setText("Invalid invitation code.");
             }
         });
 
-        // Add all components to the layout
         layout.getChildren().addAll(
             fullNameField, emailField, passwordField, confirmPasswordField,
             invitationCodeField, nextButton, statusLabel);
 
-        // Create a scene with the layout and set it to the primary stage
         Scene scene = new Scene(layout, 300, 400);
         primaryStage.setScene(scene);
-        primaryStage.show(); // Show the primary stage
+        primaryStage.show();
     }
 
-    // Main method to launch the JavaFX application
     public static void main(String[] args) {
         launch(args);
     }
