@@ -48,28 +48,19 @@ public class AdminLoginWindow extends Application {
         primaryStage.setTitle("Admin Login"); // Set the title of the window
 
         // Create a vertical box (VBox) layout with spacing between elements
-        VBox layout = new VBox(15);
+        VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER); // Center align all the elements in the VBox
-        layout.setStyle("-fx-background-color: #f4f4f4; -fx-padding: 20;"); // Add background color and padding
 
         // Create UI components for the login window
-        Label usernameLabel = new Label("Username:");
-        usernameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;"); // Style for labels
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Enter your username"); // Placeholder text for username
-        usernameField.setStyle("-fx-padding: 10;"); // Add padding to text field
+        Label usernameLabel = new Label("Username:"); // Label for the username field
+        TextField usernameField = new TextField(); // Text field for entering the username
+        Label passwordLabel = new Label("Password:"); // Label for the password field
+        PasswordField passwordField = new PasswordField(); // Password field to enter the password (hides input)
+        Label statusLabel = new Label(); // Label to display the login status (errors or success)
 
-        Label passwordLabel = new Label("Password:");
-        passwordLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;"); // Style for labels
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Enter your password"); // Placeholder text for password
-        passwordField.setStyle("-fx-padding: 10;"); // Add padding to password field
+        Button loginButton = new Button("Login"); // Button for triggering the login action
 
-        Label statusLabel = new Label();
-        statusLabel.setStyle("-fx-text-fill: red;"); // Style for status label
-
-        Button loginButton = new Button("Login");
-        loginButton.setStyle("-fx-background-color: #2e9ed6; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-size: 14px;"); // Button styling
+        // Set the action to be performed when the "Login" button is clicked
         loginButton.setOnAction(e -> {
             // Retrieve the username and password entered by the admin
             String username = usernameField.getText();
@@ -78,7 +69,7 @@ public class AdminLoginWindow extends Application {
             // Check if the provided credentials are valid using the adminApp's authentication method
             if (adminApp.checkAdminAuthentication(username, password, adminDatabaseFile)) {
                 // If authentication is successful, launch the Admin Dashboard and close the login window
-                AdminDashboard adminDashboard = new AdminDashboard(adminApp, userDatabaseFile, codeDatabaseFile, null);
+                AdminDashboard adminDashboard = new AdminDashboard(adminApp, userDatabaseFile, codeDatabaseFile);
                 adminDashboard.start(new Stage()); // Start the Admin Dashboard in a new stage
                 primaryStage.close(); // Close the current login window
             } else {
@@ -91,7 +82,7 @@ public class AdminLoginWindow extends Application {
         layout.getChildren().addAll(usernameLabel, usernameField, passwordLabel, passwordField, loginButton, statusLabel);
 
         // Create a new scene with the layout and set the stage properties
-        Scene scene = new Scene(layout, 600, 600); // Scene with width 300 and height 250
+        Scene scene = new Scene(layout, 300, 200); // Scene with width 300 and height 200
         primaryStage.setScene(scene); // Set the scene for the primary stage
         primaryStage.show(); // Display the stage
     }

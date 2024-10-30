@@ -1,11 +1,9 @@
 package cse360project;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -46,16 +44,13 @@ public class SetupAccountWindow extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Set Up Your Account"); // Set the title of the setup window
 
-        // Create a GridPane layout for better organization
-        GridPane layout = new GridPane();
-        layout.setPadding(new Insets(20)); // Set padding around the layout
-        layout.setVgap(10); // Vertical spacing
-        layout.setHgap(10); // Horizontal spacing
-        layout.setAlignment(Pos.CENTER); // Center align the layout
+        VBox layout = new VBox(10); // Create a vertical box layout with spacing
 
         // Create fields to display the user's full name, email, and password
-        TextField userNameField = new TextField(UserName);
+        TextField UserNameField = new TextField(UserName);
+
         TextField emailField = new TextField(email);
+
         PasswordField passwordField = new PasswordField(); // Create a password field for the user's password
         passwordField.setText(password); // Set the provided password
 
@@ -70,22 +65,19 @@ public class SetupAccountWindow extends Application {
         Button finishButton = new Button("Finish Setup"); // Button to finish the account setup
         Label statusLabel = new Label(); // Label to display the status of account creation
 
-        // Style the buttons
-        finishButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-background-color: #4CAF50; -fx-text-fill: white;");
-
         // Action event for the finish button
         finishButton.setOnAction(e -> {
             String role = roleComboBox.getValue(); // Get the selected role
             String invitationCode = invitationCodeField.getText(); // Get the invitation code
-            String userName = userNameField.getText(); // Get the updated user name
-            String password = passwordField.getText(); // Get the updated password
+            String UserName = UserNameField.getText(); // Get the updated user name
+            String password = passwordField.getText(); // Get the updated user name
 
             // Validate the invitation code and proceed to setup
             if (adminApp.validateInvitationCode(invitationCode, "Student", codeD) || 
                 adminApp.validateInvitationCode(invitationCode, "Instructor", codeD)) {
                 
                 // Attempt to add the user account using the provided details
-                if (adminApp.addUserAccount(userName, password, role, userD)) {
+                if (adminApp.addUserAccount(UserName, password, role, userD)) {
                     statusLabel.setText("Account created successfully!"); // Success message
                 } else {
                     statusLabel.setText("Account creation failed. User may already exist."); // Failure message
@@ -96,20 +88,15 @@ public class SetupAccountWindow extends Application {
         });
 
         // Add all components to the layout
-        layout.add(new Label("User Name:"), 0, 0);
-        layout.add(userNameField, 1, 0);
-        layout.add(new Label("Email:"), 0, 1);
-        layout.add(emailField, 1, 1);
-        layout.add(new Label("Password:"), 0, 2);
-        layout.add(passwordField, 1, 2);
-        layout.add(new Label("Invitation Code:"), 0, 3);
-        layout.add(invitationCodeField, 1, 3);
-        layout.add(new Label("Role:"), 0, 4);
-        layout.add(roleComboBox, 1, 4);
-        layout.add(finishButton, 0, 5, 2, 1); // Span the finish button across two columns
-        layout.add(statusLabel, 0, 6, 2, 1); // Span the status label across two columns
+        layout.getChildren().addAll(
+            new Label("User Name:"), UserNameField,
+            new Label("Email:"), emailField,
+            new Label("Password:"), passwordField,
+            new Label("Invitation Code:"), invitationCodeField,
+            new Label("Role:"), roleComboBox,
+            finishButton, statusLabel);
 
-        Scene scene = new Scene(layout, 600, 600); // Create a scene with the layout
+        Scene scene = new Scene(layout, 300, 300); // Create a scene with the layout
         primaryStage.setScene(scene); // Set the scene for the primary stage
         primaryStage.show(); // Display the primary stage
     }

@@ -1,11 +1,10 @@
-package cse360project;
+package cse360project1;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -24,27 +23,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        // Initialize the admin database if not already initialized
         adminApp.initializeAdminDatabase(adminDatabaseFile); // Ensure the admin database is set up
 
         primaryStage.setTitle("CSE 360 Help System"); // Set the title of the primary stage
 
-        // Create a GridPane layout for better organization
-        GridPane layout = new GridPane();
-        layout.setPadding(new Insets(20)); // Set padding around the layout
-        layout.setVgap(15); // Vertical spacing
-        layout.setHgap(10); // Horizontal spacing
+        VBox layout = new VBox(10); // Create a vertical box layout with spacing
         layout.setAlignment(Pos.CENTER); // Center align the layout
 
         // Create welcome label and buttons for admin and user login
         Label welcomeLabel = new Label("Welcome to the CSE 360 Help System");
-        welcomeLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;"); // Style for the welcome label
-
         Button adminButton = new Button("Admin"); // Button to open the admin login window
         Button userButton = new Button("User"); // Button to open the user login window
-
-        // Style the buttons
-        adminButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-background-color: #4CAF50; -fx-text-fill: white;");
-        userButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-background-color: #2196F3; -fx-text-fill: white;");
 
         // Set action for the admin button
         adminButton.setOnAction(e -> {
@@ -61,12 +51,10 @@ public class Main extends Application {
         });
 
         // Add the welcome label and buttons to the layout
-        layout.add(welcomeLabel, 0, 0, 2, 1); // Span the label across two columns
-        layout.add(adminButton, 0, 1); // Admin button in the first column
-        layout.add(userButton, 1, 1); // User button in the second column
-
+        layout.getChildren().addAll(welcomeLabel, adminButton, userButton);
+        
         // Create a scene with the specified layout and dimensions
-        Scene scene = new Scene(layout, 600, 600); // Increased width for better spacing
+        Scene scene = new Scene(layout, 300, 200);
         primaryStage.setScene(scene); // Set the scene for the primary stage
         primaryStage.show(); // Display the primary stage
     }

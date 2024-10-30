@@ -1,4 +1,4 @@
-package cse360project;
+package cse360project1;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -19,7 +19,6 @@ public class AdminDashboard extends Application {
     private final AdminApp adminApp; // Instance of the AdminApp to handle logic related to admin tasks
     private final File userDatabaseFile; // File object representing the user database
     private final File codeDatabaseFile; // File object representing the code database
-    private final HelpArticleManager helpArticleManager; // Instance of HelpArticleManager for articles
 
     /**
      * Constructor for the AdminDashboard.
@@ -28,13 +27,11 @@ public class AdminDashboard extends Application {
      * @param adminApp The AdminApp object for handling admin operations.
      * @param userDatabaseFile The file representing the user database.
      * @param codeDatabaseFile The file representing the code database.
-     * @param helpArticleManager The HelpArticleManager for managing help articles.
      */
-    public AdminDashboard(AdminApp adminApp, File userDatabaseFile, File codeDatabaseFile, HelpArticleManager helpArticleManager) {
+    public AdminDashboard(AdminApp adminApp, File userDatabaseFile, File codeDatabaseFile) {
         this.adminApp = adminApp;
         this.userDatabaseFile = userDatabaseFile;
         this.codeDatabaseFile = codeDatabaseFile;
-        this.helpArticleManager = helpArticleManager; // Initialize HelpArticleManager
     }
 
     /**
@@ -48,55 +45,33 @@ public class AdminDashboard extends Application {
         primaryStage.setTitle("Admin Dashboard"); // Set the title of the window
 
         // Create a vertical box (VBox) layout with spacing between elements
-        VBox layout = new VBox(15);
+        VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER); // Center align all the elements in the VBox
-        layout.setStyle("-fx-background-color: #f4f4f4; -fx-padding: 20;"); // Set background color and padding
 
         // Create UI components for the dashboard
-        Label titleLabel = new Label("Admin Dashboard");
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2e9ed6;"); // Style title
-
-        Button manageUsersButton = new Button("Manage Users");
-        manageUsersButton.setStyle("-fx-background-color: #2e9ed6; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-size: 14px;"); // Button styling
-
-        Button generateInvitationButton = new Button("Generate Invitation Code");
-        generateInvitationButton.setStyle("-fx-background-color: #2e9ed6; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-size: 14px;"); // Button styling
-
-        Button manageArticlesButton = new Button("Manage Help Articles");
-        manageArticlesButton.setStyle("-fx-background-color: #2e9ed6; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-size: 14px;"); // Button styling
-
-        // Log Out button
-        Button logoutButton = new Button("Log Out");
-        logoutButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-size: 14px;"); // Style for log out button
-        logoutButton.setOnAction(e -> {
-            primaryStage.close(); // Close the admin dashboard
-        });
+        Label titleLabel = new Label("Admin Dashboard"); // Title label
+        Button manageUsersButton = new Button("Manage Users"); // Button for managing users
+        Button generateInvitationButton = new Button("Generate Invitation Code"); // Button for generating invitation codes
 
         // Set the action to be performed when the "Manage Users" button is clicked
         manageUsersButton.setOnAction(e -> {
-            AdminWindow adminWindow = new AdminWindow(adminApp, userDatabaseFile, codeDatabaseFile);
-            adminWindow.show();
+            // Logic to manage users, such as viewing, adding, or deleting users.
+            // Not implemented here, placeholder for future implementation.
+            showAlert("Manage Users", "This functionality is not yet implemented.");
         });
 
         // Set the action to be performed when the "Generate Invitation Code" button is clicked
         generateInvitationButton.setOnAction(e -> {
             // Logic to generate an invitation code for a student
             String code = adminApp.generateInvitationCode("Student", codeDatabaseFile); // Generate code for "Student" role
-            showAlert("Invitation Code", "Generated code: " + code); // Show alert with the generated code
-        });
-
-        // Set action for the manage articles button
-        manageArticlesButton.setOnAction(e -> {
-            // Create and display the ArticleManagementWindow
-            ArticleManagementWindow articleWindow = new ArticleManagementWindow();
-            articleWindow.start(new Stage()); // Open a new stage for managing articles
+            showAlert("Invitation Code", "Generated code for Student: " + code); // Show alert with the generated code
         });
 
         // Add all UI components to the layout
-        layout.getChildren().addAll(titleLabel, manageUsersButton, generateInvitationButton, manageArticlesButton, logoutButton);
+        layout.getChildren().addAll(titleLabel, manageUsersButton, generateInvitationButton);
 
         // Create a new scene with the layout and set the stage properties
-        Scene scene = new Scene(layout, 600, 600); // Scene with width 400 and height 300
+        Scene scene = new Scene(layout, 400, 300); // Scene with width 400 and height 300
         primaryStage.setScene(scene); // Set the scene for the primary stage
         primaryStage.show(); // Display the stage
     }

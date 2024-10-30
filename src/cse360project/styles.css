@@ -1,0 +1,32 @@
+.button {
+    -fx-background-color: #2e9ed6; /* Primary color */
+    -fx-text-fill: white; /* Text color */
+    -fx-padding: 10px 20px; /* Button padding */
+    -fx-font-size: 14px; /* Font size */
+    -fx-border-radius: 5; /* Rounded corners */
+}
+
+.button:hover {
+    -fx-background-color: #48c1fe; /* Lighter color on hover */
+}
+
+.text-area {
+    -fx-border-color: #2e9ed6; /* Border color */
+    -fx-border-radius: 5; /* Rounded corners */
+    -fx-padding: 10; /* Padding inside the TextArea */
+}
+
+.list-view {
+    -fx-pref-height: 150; /* Preferred height for the ListView */
+}
+
+.label {
+    -fx-font-size: 14px; /* Label font size */
+}
+
+.text-field, .password-field {
+    -fx-border-color: #ccc; /* Border color for text fields */
+    -fx-background-color: #fff; /* Background color for text fields */
+    -fx-border-radius: 5; /* Rounded corners */
+    -fx-padding: 10; /* Padding inside the text fields */
+}
