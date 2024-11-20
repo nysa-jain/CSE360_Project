@@ -1,4 +1,4 @@
-package cse360project;
+package cse360mainproject;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
