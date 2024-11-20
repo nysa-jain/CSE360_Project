@@ -1,4 +1,4 @@
-package cse360project;
+package cse360mainproject;
 
 import java.io.BufferedWriter;
 import java.io.File;

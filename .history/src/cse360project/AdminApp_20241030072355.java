@@ -1,9 +1,6 @@
 package cse360project;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -181,9 +178,7 @@ public class AdminApp {
                 String username = infos[0];
                 String password = infos[1];
                 List<String> roles = new ArrayList<>(List.of(infos[2].split(","))); // Mutable ArrayList
-                List<String> accessibleGroups = UserInfo.getAccessibleGroups(username);
-                List<String> accessibleArticles = UserInfo.getAccessibleArticles(username);
-                users.add(new UserInfo(username, password, roles, accessibleGroups, accessibleArticles));
+                users.add(new UserInfo(username, password, roles));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -204,43 +199,15 @@ public class AdminApp {
     }
 
     public boolean removeRole(String username, String role, File userD) {
-        // Load all users from the database
-        List<UserInfo> users = getAllUsers(userD);
-        
-        // Check if the role being removed is an admin role
-        if (role.equalsIgnoreCase("Admin")) {
-	        // Check if removing this role would leave no admins in the system
-	        long adminCount = users.stream()
-	                .filter(user -> user.getRoles().contains("Admin"))
-	                .count();
-	        
-	        if (adminCount < 1) {
-	            System.out.println("Cannot remove the last admin from the system.");
-	            return false; // Do not allow removal if it's the last admin
-	        }
-	        else {
-	        	// Proceed to remove the admin role from the user
-	            for (UserInfo user : users) {
-	                if (user.getUsername().equals(username)) {
-	                    user.removeRole(role); // Remove the admin role
-	                    updateUserDatabase(users, userD); // Update the user database
-	                    return true;
-	                }
-	            }
-	        }
+    	List<UserInfo> users = getAllUsers(userD);
+		for (UserInfo user : users) {
+            if (user.getUsername().equals(username)) {
+                user.removeRole(role); // Call the updated removeRole method in UserInfo
+                updateUserDatabase(users, userD);
+                return true;
+            }
         }
-        else {
-	        // Proceed to remove the admin role from the user
-	        for (UserInfo user : users) {
-	            if (user.getUsername().equals(username)) {
-	                user.removeRole(role); // Remove the admin role
-	                updateUserDatabase(users, userD); // Update the user database
-	                return true;
-	            }
-	        }
-        }
-        
-        return false; // Return false if the user was not found or role was not removed
+		return false;
     }
 
     private void updateUserDatabase(List<UserInfo> users, File userD) {
