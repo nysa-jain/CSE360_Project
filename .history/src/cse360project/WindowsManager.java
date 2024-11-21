@@ -257,7 +257,7 @@ public class WindowsManager extends Stage {
 		layout.add(loginButton, 0, 3);
 		layout.add(signUpButton, 1, 3);
 		layout.add(statusLabel, 0, 4, 2, 1); // Status label spanning two columns
-		layout.add(backButton, 0, 8, 2, 1);
+		layout.add(backButton, 0, 5, 2, 1);
 
 		// Create a scene with the layout and set it to the primary stage
 		Scene scene = new Scene(layout, 600, 600);
@@ -296,7 +296,10 @@ public class WindowsManager extends Stage {
 		Button logoutButton = new Button("Log Out");
 		logoutButton.setStyle(
 				"-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-size: 14px;"); // Style
-																													// for																											// button
+																													// for
+																													// log
+																													// out
+																													// button
 		Button manageGroupsButton = new Button("Manage Groups"); // New button for group management
 	    manageGroupsButton.setStyle("-fx-background-color: #2e9ed6; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-size: 14px;");
 
@@ -351,7 +354,7 @@ public class WindowsManager extends Stage {
 	    viewUsersButton.setOnAction(event -> viewAllUsers(primaryStage));
 	    changeRoleButton.setOnAction(e -> openChangeUserRoleWindow(primaryStage, statusLabel));
 
-	    Button backButton = createBackButton(primaryStage, () -> showAdminDashboard(new Stage()));
+	    Button backButton = createBackButton(primaryStage, () -> showAdminDashboard(primaryStage)); // Back button to Admin Dashboard
 
 	    adminLayout.getChildren().addAll(createUserButton, deleteUserButton, viewUsersButton, changeRoleButton, backButton, statusLabel);
 	    adminLayout.setAlignment(Pos.CENTER);
@@ -634,7 +637,7 @@ public class WindowsManager extends Stage {
 	    Button saveEditsButton = new Button("Save Edits");
 	    Button backupButton = new Button("Backup Articles");
 	    Button restoreButton = new Button("Restore Articles");
-	    
+
 	    addButton.setOnAction(e -> {
 	        try {
 	            addArticle(titleField, descriptionField, articleContent, keywordsField, groupsField,
@@ -678,14 +681,14 @@ public class WindowsManager extends Stage {
 	            restoreButton, backButton); // Add Back button here
 	    buttonLayout.setAlignment(Pos.CENTER);
 
-	    layout.getChildren().addAll(titleLabel, formLayout, articleListView, buttonLayout); // Add to article management layout);
+	    layout.getChildren().addAll(titleLabel, formLayout, articleListView, buttonLayout);
 
 	    Scene scene = new Scene(layout, 600, 600);
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
 	}
 
-	void addArticle(TextField titleField, TextField descriptionField, TextArea articleContent,
+	private void addArticle(TextField titleField, TextField descriptionField, TextArea articleContent,
 		TextField keywordsField, TextField groupsField, ComboBox<String> difficultyLevelComboBox,
 		HelpArticleManager articleManager, ListView<HelpArticle> articleListView, Label statusLabel) throws Exception {
 		String title = titleField.getText();
@@ -708,7 +711,7 @@ public class WindowsManager extends Stage {
 		}
 	}
 
-	void editArticle(TextField titleField, TextField descriptionField, TextArea articleContent,
+	private void editArticle(TextField titleField, TextField descriptionField, TextArea articleContent,
 			TextField keywordsField, TextField groupsField, ComboBox<String> difficultyLevelComboBox,
 			ListView<HelpArticle> articleListView, Label statusLabel) {
 		HelpArticle selectedArticle = articleListView.getSelectionModel().getSelectedItem();
@@ -724,7 +727,7 @@ public class WindowsManager extends Stage {
 		}
 	}
 
-	void saveEdits(TextField titleField, TextField descriptionField, TextArea articleContent,
+	private void saveEdits(TextField titleField, TextField descriptionField, TextArea articleContent,
 			TextField keywordsField, TextField groupsField, ComboBox<String> difficultyLevelComboBox,
 			ListView<HelpArticle> articleListView, HelpArticleManager articleManager, Label statusLabel) {
 		HelpArticle selectedArticle = articleListView.getSelectionModel().getSelectedItem();
@@ -753,7 +756,7 @@ public class WindowsManager extends Stage {
 		}
 	}
 
-	void deleteArticle(ListView<HelpArticle> articleListView, HelpArticleManager articleManager,
+	private void deleteArticle(ListView<HelpArticle> articleListView, HelpArticleManager articleManager,
 			Label statusLabel) {
 		HelpArticle selectedArticle = articleListView.getSelectionModel().getSelectedItem();
 		if (selectedArticle != null) {
@@ -765,7 +768,7 @@ public class WindowsManager extends Stage {
 		}
 	}
 
-	void backupArticles(HelpArticleManager articleManager, Label statusLabel) {
+	private void backupArticles(HelpArticleManager articleManager, Label statusLabel) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save Backup File");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -780,7 +783,7 @@ public class WindowsManager extends Stage {
 		}
 	}
 
-	void restoreArticles(ListView<HelpArticle> articleListView, HelpArticleManager articleManager,
+	private void restoreArticles(ListView<HelpArticle> articleListView, HelpArticleManager articleManager,
 			Label statusLabel) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Backup File");
@@ -852,8 +855,6 @@ public class WindowsManager extends Stage {
 	    groupComboBox.setValue("All Groups");
 
 	    Button searchButton = new Button("Search");
-	    
-	    Button backButton = createBackButton(primaryStage, () -> showUserLoginWindow(new Stage()));
 
 	    articleTableView.setMinWidth(500);
 	    articleTableView.setMaxHeight(300);
@@ -932,7 +933,9 @@ public class WindowsManager extends Stage {
 	        updateGroupAndLevelCounts(articlesList, groupComboBox, activeGroupLabel, levelCountLabel);
 	    });
 
-	    
+	    // Add a back button for navigation
+	    Button backButton = createBackButton(primaryStage, () -> showUserLoginWindow(primaryStage)); // Back to User Login
+
 	    layout.add(welcomeLabel, 0, 0, 2, 1);
 	    layout.add(new Label("Search:"), 0, 1);
 	    layout.add(searchField, 1, 1);
@@ -1083,8 +1086,6 @@ public class WindowsManager extends Stage {
 	    Button backupAllButton = new Button("Backup All Articles");
 	    Button restoreButton = new Button("Restore Articles");
 	    Button backupByGroupButton = new Button("Backup by Group");
-	    
-	    Button backButton = createBackButton(primaryStage, () -> showUserLoginWindow(primaryStage));
 
 	    articleTableView.setMinWidth(500);
 	    articleTableView.setMaxHeight(300);
@@ -1126,7 +1127,7 @@ public class WindowsManager extends Stage {
 	        ObservableList<HelpArticle> observableArticles = FXCollections.observableArrayList(articlesList);
 	        articleTableView.setItems(observableArticles);
 
-	        updateGroupAndLevelCounts(articlesList, groupComboBox, activeGroupLabel, levelCountLabel);
+	        updateGroupAndLevelCounts(articles, groupComboBox, activeGroupLabel, levelCountLabel);
 	    });
 
 	    // Backup All Articles
@@ -1186,7 +1187,6 @@ public class WindowsManager extends Stage {
 	    layout.add(backupByGroupButton, 1, 8);
 	    layout.add(restoreButton, 0, 9, 2, 1);
 	    layout.add(statusLabel, 0, 10, 2, 1); // Add status label for feedback
-	    layout.add(backButton, 0, 11, 2, 1);
 
 	    Scene scene = new Scene(layout, 600, 600);
 	    primaryStage.setScene(scene);
@@ -1233,9 +1233,6 @@ public class WindowsManager extends Stage {
 	            statusLabel.setText("Cannot remove the last admin from the group.");
 	        }
 	    });
-	    
-	    Button manageSpecialAccessButton = new Button("Manage Special Access");
-	    manageSpecialAccessButton.setOnAction(e -> openGrantSpecialAccessWindow(primaryStage));
 
 	    GridPane layout = new GridPane();
 	    layout.setPadding(new Insets(20));
@@ -1252,7 +1249,6 @@ public class WindowsManager extends Stage {
 	    layout.add(addUserButton, 0, 4);
 	    layout.add(removeUserButton, 1, 4);
 	    layout.add(statusLabel, 0, 5, 2, 1);
-	    layout.add(manageSpecialAccessButton, 1, 5); // Add to group management layout
 
 	    Scene scene = new Scene(layout, 400, 300);
 	    primaryStage.setScene(scene);

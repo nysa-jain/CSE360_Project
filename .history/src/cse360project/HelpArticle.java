@@ -1,4 +1,4 @@
-package cse360mainproject;
+package cse360project;
 
 import java.time.LocalDateTime;
 
