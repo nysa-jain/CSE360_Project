@@ -80,10 +80,4 @@ public class HelpArticleManager {
         alert.showAndWait(); // Show the alert and wait for the user to close it
     }
     
-    
-    public boolean validateArticleInput(String title, String description, String content, String keywords, String groups, String difficulty) {
-        // Check if any of the required fields are empty
-        return !(title.isEmpty() || description.isEmpty() || content.isEmpty() || keywords.isEmpty() || groups.isEmpty() || difficulty == null);
-    }
-
 }
